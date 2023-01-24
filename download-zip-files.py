@@ -19,15 +19,15 @@ i = 0
 for link in links:
     # Uncomment the following line to process 
     # an specific number of files
-    #if i == 3:
-    #    break
+    if i == 3:
+        break
     
     if ('.zip' in link.get('href', [])):
         
         book_name = link.get('href')
         full_link = main_link + book_name
         
-        print(f"Downloading file number {i}: {full_link}")
+        print(f"Downloading file number {i+1}: {full_link}")
         
         # Get response object for link
         response = requests.get(full_link)
@@ -36,9 +36,9 @@ for link in links:
         with open(f"{book_name}", 'wb') as pdf:
             pdf.write(response.content)
 
-        print(f"File {i}: {book_name} downloaded")
+        print(f"File {i+1}: {book_name} downloaded")
         
         # Unzip the file
         shutil.unpack_archive(book_name, "./")
-        print(f"File {i}: {book_name} unzipped.")
+        print(f"File {i+1}: {book_name} unzipped.")
         i += 1

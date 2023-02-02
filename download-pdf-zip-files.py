@@ -1,8 +1,20 @@
+
+from typing_extensions import Literal
 from bs4 import BeautifulSoup
 import requests
 import shutil
 
 def download_file(link_str: any):
+    """This function takes a BeautifulSoup string with
+    the link and try download it. If it fails, it returns 
+    the exception.
+
+    Args:
+        link_str (any): It is the file link.
+
+    Returns:
+        bool: True if all was correctly executed, str if error.
+    """
     try:
         book_name = link_str.get('href')
         full_link = main_link + book_name
@@ -24,6 +36,15 @@ def download_file(link_str: any):
 
 
 def process_zip_file(book_name: str):
+    """This function takes a zipe file path and
+    try to unzip it.
+
+    Args:
+        book_name (str): It is the zip file path.
+
+    Returns:
+        bool: True if all was correctly executed, str if error.
+    """
     try:
         # Unzip the file
         shutil.unpack_archive(book_name, "./")
@@ -41,10 +62,11 @@ soup = BeautifulSoup(r.text, 'html.parser')
 # Find all hyperlinks present on webpage
 links = soup.find_all('a')
 
+# List of allowed file types
 file_types = [".zip", ".pdf"]
 
-# From all links check for pdf link and
-# if present download file
+# From all links check for an allowed file link and
+# if present download it and process if needed.
 for link in links[6:7]:
     href = link.get('href', [])
     book_name = link.get('href')
